@@ -12,9 +12,13 @@ const checkoutYourInfoPage = new CheckoutYourInfoPage();
 const inventoryPage = new InventoryPage();
 const userData = require('../../fixtures/userData.json');
 
-When('The user selects the {string} item', (itemName) => {
-  inventoryPage.selectItem(itemName);
-});
+When(
+  'The user selects the item {string} of cost {string}',
+  (itemName, cost) => {
+    inventoryPage.selectItem(itemName);
+    cy.saveItemCost(cost);
+  }
+);
 
 Then('The shopping cart icon should show {string} items', (numItems) => {
   inventoryPage.verifyShoppingCartCount(numItems);
@@ -28,12 +32,24 @@ Then('The cart should contain {int} items', (numItems) => {
   cartPage.verifyShoppingCartCount(numItems);
 });
 
+Then('verify cart contains {string} of cost {string}', (itemName, cost) => {
+  cartPage.verifyCartContainsItem(itemName, cost);
+});
+
 When('The user continues to checkout', () => {
   cartPage.clickCheckoutButton();
 });
 
 When('The {string} user enters their info', (userKey) => {
   checkoutYourInfoPage.enterUserInfo(userData[userKey]);
+});
+
+Then('The price total shows the correct amounts', () => {
+  cy.get('@itemTotal').then((itemTotal) => {
+    checkoutCompletePage.verifySubtotal(itemTotal);
+    checkoutCompletePage.verifyTax(itemTotal);
+    checkoutCompletePage.verifyTotal(itemTotal);
+  });
 });
 
 When('The user clicks the finish button', () => {
