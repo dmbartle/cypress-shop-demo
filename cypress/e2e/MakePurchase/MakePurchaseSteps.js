@@ -29,11 +29,21 @@ When('The user navigates to the shopping cart', () => {
 });
 
 Then('The cart should contain {int} items', (numItems) => {
-  cartPage.verifyShoppingCartCount(numItems);
+  cartPage.verifyInventoryItemCount(numItems);
 });
 
-Then('verify cart contains {string} of cost {string}', (itemName, cost) => {
-  cartPage.verifyCartContainsItem(itemName, cost);
+Then(
+  'verify shopping cart contains {string} of cost {string}',
+  (itemName, cost) => {
+    cartPage.verifyInventoryItem(itemName, cost);
+  }
+);
+Then('The checkout should contain {int} items', (numItems) => {
+  checkoutOverviewPage.verifyInventoryItemCount(numItems);
+});
+
+Then('verify checkout contains {string} of cost {string}', (itemName, cost) => {
+  checkoutOverviewPage.verifyInventoryItem(itemName, cost);
 });
 
 When('The user continues to checkout', () => {
@@ -46,9 +56,9 @@ When('The {string} user enters their info', (userKey) => {
 
 Then('The price total shows the correct amounts', () => {
   cy.get('@itemTotal').then((itemTotal) => {
-    checkoutCompletePage.verifySubtotal(itemTotal);
-    checkoutCompletePage.verifyTax(itemTotal);
-    checkoutCompletePage.verifyTotal(itemTotal);
+    checkoutOverviewPage.verifySubtotal(itemTotal);
+    checkoutOverviewPage.verifyTax(itemTotal);
+    checkoutOverviewPage.verifyTotal(itemTotal);
   });
 });
 

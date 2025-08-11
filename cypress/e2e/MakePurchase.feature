@@ -10,11 +10,11 @@ Feature: Shopping Cart Tests
         Then The shopping cart icon should show "1" items
         When The user navigates to the shopping cart
         Then The cart should contain 1 items
-        And verify cart contains "<Item Name>" of cost "<Cost>"
+        And verify shopping cart contains "<Item Name>" of cost "<Cost>"
         When The user continues to checkout
         And The "standard" user enters their info
-        Then The cart should contain 1 items
-        And verify cart contains "<Item Name>" of cost "<Cost>"
+        Then The checkout should contain 1 items
+        And verify checkout contains "<Item Name>" of cost "<Cost>"
         And The price total shows the correct amounts
         And The user clicks the finish button
         Then The checkout complete page is displayed
