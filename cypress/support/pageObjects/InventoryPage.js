@@ -7,6 +7,8 @@ const PRODUCT_SORT_CONTAINER = 'select[data-test="product-sort-container"]';
 const SHOPPING_CART_BADGE = 'span[data-test="shopping-cart-badge"]';
 const SHOPPING_CART_LINK = 'a[class="shopping_cart_link"]';
 
+const { regExpEscape } = require('../utils');
+
 class InventoryPage {
   isDisplayed() {
     cy.get(PAGE_TITLE).contains('Products').should('be.visible');
@@ -17,7 +19,7 @@ class InventoryPage {
   selectItem(itemName) {
     // using exact match regex for the edge case where one items name
     // could be contained within a second item, e.g. "pen" and "pencil"
-    const exactMatch = new RegExp(`^${itemName}$`);
+    const exactMatch = new RegExp(`^${regExpEscape(itemName)}$`);
     cy.get(INVENTORY_ITEM_NAME)
       .contains(exactMatch)
       .parents(INVENTORY_ITEM)
